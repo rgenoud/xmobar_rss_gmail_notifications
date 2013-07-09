@@ -51,6 +51,10 @@ curl --netrc "$feed" --silent \
 	| sed -n "s/<title>\(.*\)<\/title>.*<name>\(.*\)<\/name>.*/\2 – \1/p" \
 	| tac \
 	>$tmp_dir/$feed_file
+if [ $? -ne 0 ] ; then
+	echo "error retrieving $feed; Aborting"
+	exit 1
+fi
 
 # get only the new lines
 diff -a -u $tmp_dir/$feed_old_file $tmp_dir/$feed_file \
